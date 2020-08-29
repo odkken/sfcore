@@ -46,7 +46,7 @@ namespace SFCORE
                 _input = input;
             }
 
-            public void Update()
+            public void Update(float dt)
             {
                 var ds = new Vector2();
                 if (_input.IsKeyDown(Keyboard.Key.W))
@@ -57,7 +57,7 @@ namespace SFCORE
                     ds.Y += 1;
                 if (_input.IsKeyDown(Keyboard.Key.D))
                     ds.X += 1;
-                Move(ds);
+                Move(ds * dt * 100);
             }
 
             public Vector2 Position { get; set; }
@@ -150,6 +150,16 @@ namespace SFCORE
             Core.Initialize(window, timeInfo, _gameInput, new WindowUtilUtil(() => window.Size), () => _logger, new TextInfo() { DefaultFont = new Font(@"D:\git\SFCORE\SFCORE\SFCORE\Inconsolata-Regular.ttf") });
             InitTerminal();
 
+
+
+            var playerShape = new CircleShape(10) { FillColor = Color.Blue };
+            var playercontrollable = new Controllable(_gameInput);
+            var player = new Character(a => { playerShape.Position = a.ToSFVec(); return playerShape; }, () => playercontrollable.Position);
+
+
+
+
+
             while (window.IsOpen)
             {
                 timeInfo.Tick();
@@ -159,8 +169,10 @@ namespace SFCORE
                 window.Clear();
                 window.DispatchEvents();
                 globalInput.Update(timeInfo.CurrentDt);
+                playercontrollable.Update(timeInfo.CurrentDt);
                 window.Clear(Color.Black);
                 window.Draw(_terminal);
+                window.Draw(player);
                 window.Display();
             }
         }

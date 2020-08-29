@@ -88,6 +88,10 @@ namespace SFCORE
         {
             return new Vector2f(v.X, v.Y);
         }
+        public static Vector2f ToSFVec(this Vector2 v)
+        {
+            return new Vector2f(v.X, v.Y);
+        }
         public static float SquareMagnitude(this Vector2f vector)
         {
             return vector.X * vector.X + vector.Y * vector.Y;
